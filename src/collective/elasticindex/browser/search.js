@@ -266,7 +266,13 @@
         var trailing_punctuation_re = /^[;,.\s]*([\S\s]*?)[;,.\s]*$/;
 
         var trim_punctuation = function(string) {
-            var match = string.match(trailing_punctuation_re);
+            if (typeof string == 'string') {
+                var match = string.match(trailing_punctuation_re);
+            } else {
+                var match = ""
+                for (i=0, len=string.length; i < len; i++) {
+                    match.push(string[i].match(trailing_punctuation_re));
+                }
             if (match) {
                 return match[1];
             }
@@ -301,11 +307,19 @@
                 };
             };
 
+            mtype = []
+            if (typeof entry.fields.metaType == "string") {
+                mtype.push(entry.fields.metaType.replace(/^\s+|\s+$/g, '').replace(/\s+/g,'-').toLowerCase());
+            } else {
+                for (i=0, len=entry.fields.metaType.length; i < len; i++) {
+                    mtype.push(entry.fields.metaType[i].replace(/^\s+|\s+$/g, '').replace(/\s+/g,'-').toLowerCase());
+                }
+            }
             return {
                 title: title,
                 description: description,
                 url: entry.fields.url,
-                meta_type: entry.fields.metaType.replace(/^\s+|\s+$/g, '').replace(/\s+/g,'-').toLowerCase()
+                meta_type: mtype
             };
         };
 
