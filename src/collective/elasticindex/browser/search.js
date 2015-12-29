@@ -266,13 +266,14 @@
         var trailing_punctuation_re = /^[;,.\s]*([\S\s]*?)[;,.\s]*$/;
 
         var trim_punctuation = function(string) {
+            var match = [];
             if (typeof string == 'string') {
-                var match = string.match(trailing_punctuation_re);
+                match = string.match(trailing_punctuation_re);
             } else {
-                var match = ""
                 for (i=0, len=string.length; i < len; i++) {
                     match.push(string[i].match(trailing_punctuation_re));
-                }
+                };
+            };
             if (match) {
                 return match[1];
             }

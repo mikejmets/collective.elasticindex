@@ -88,6 +88,57 @@ def get_data(content, security=False, domain=None):
             'url': url,
             'author': content.Creator(),
             'content': text}
+    if content.portal_type in (
+            'bb.toaster.audioartefact', 'bb.toaster.documentartefact', 
+            'bb.toaster.otherartefact', 'bb.toaster.videoartefact'):
+        tags = []
+        data['categoryIds'] = []
+        data['categoryTitles']= []
+        data['layeroneIds']= []
+        data['layeroneTitles']= []
+        data['layertwoIds']= []
+        data['layertwoTitles']= []
+        data['layerthreeIds']= []
+        data['layerthreeTitles']= []
+        data['layerfourIds']= []
+        data['layerfourTitles']= []
+        data['layerfiveIds']= []
+        data['layerfiveTitles']= []
+        for rel in content.taglist:
+            if not rel.to_object:
+                continue
+            titleList = rel.to_object.title.split('_')
+            idList = rel.to_object.id.split('_')
+            for i in range(len(titleList)):
+                tags.append(titleList[i])
+                if i == 0:
+                    data['categoryIds'].append(idList[i])
+                    data['categoryTitles'].append(titleList[i])
+                elif i == 1:
+                    data['layeroneIds'].append(idList[i])
+                    data['layeroneTitles'].append(titleList[i])
+                elif i == 2:
+                    data['layertwoIds'].append(idList[i])
+                    data['layertwoTitles'].append(titleList[i])
+                elif i == 3:
+                    data['layerthreeIds'].append(idList[i])
+                    data['layerthreeTitles'].append(titleList[i])
+                elif i == 4:
+                    data['layerfourIds'].append(idList[i])
+                    data['layerfourTitles'].append(titleList[i])
+                elif i == 5:
+                    data['layerfiveIds'].append(idList[i])
+                    data['layerfiveTitles'].append(titleList[i])
+        data['tags'] = tags
+        data['superclass'] = 'artefact'
+        kws = []
+        ftkeywords = content.ftkeywords
+        if ftkeywords is not None and len(ftkeywords) > 0:
+            kws = ftkeywords.split(",")
+            kws = [kw.strip() for kw in kws]
+            kws = [kw for kw in kws if len(kw) > 0]
+        data['keywords'] = kws
+        data['format'] = content.getFTFormat()
 
     if security:
         data['authorizedUsers'] = get_security(content)

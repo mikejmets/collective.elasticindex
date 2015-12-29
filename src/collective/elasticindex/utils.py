@@ -48,6 +48,12 @@ DOCUMENT_MAPPING = {
     '_id' : STORED_STRING_MAPPING,
     'url': STORED_STRING_MAPPING,
     'metaType': STORED_STRING_MAPPING,
+    'categoryIds': STORED_STRING_MAPPING,
+    'layeroneIds': STORED_STRING_MAPPING,
+    'layertwoIds': STORED_STRING_MAPPING,
+    'layerthreeIds': STORED_STRING_MAPPING,
+    'layerfourIds': STORED_STRING_MAPPING,
+    'layerfiveIds': STORED_STRING_MAPPING,
 
     # Not stored
     'created': DATE_MAPPING,
