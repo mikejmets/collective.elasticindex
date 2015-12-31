@@ -86,6 +86,7 @@ def get_data(content, security=False, domain=None):
             'subject': content.Subject(),
             'contributors': content.Contributors(),
             'url': url,
+            'path': '/'.join(content.getPhysicalPath()),
             'author': content.Creator(),
             'content': text}
     if content.portal_type in (
