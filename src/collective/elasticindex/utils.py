@@ -48,12 +48,6 @@ DOCUMENT_MAPPING = {
     '_id' : STORED_STRING_MAPPING,
     'url': STORED_STRING_MAPPING,
     'metaType': STORED_STRING_MAPPING,
-    'categoryIds': STORED_STRING_MAPPING,
-    'layeroneIds': STORED_STRING_MAPPING,
-    'layertwoIds': STORED_STRING_MAPPING,
-    'layerthreeIds': STORED_STRING_MAPPING,
-    'layerfourIds': STORED_STRING_MAPPING,
-    'layerfiveIds': STORED_STRING_MAPPING,
 
     # Not stored
     'created': DATE_MAPPING,
@@ -61,6 +55,13 @@ DOCUMENT_MAPPING = {
     'publishedYear': INT_MAPPING,
     'sortableTitle': STRING_MAPPING,
     'authorizedUsers': STRING_MAPPING,
+    'categoryIds': STRING_MAPPING,
+    'layeroneIds': STRING_MAPPING,
+    'layertwoIds': STRING_MAPPING,
+    'layerthreeIds': STRING_MAPPING,
+    'layerfourIds': STRING_MAPPING,
+    'layerfiveIds': STRING_MAPPING,
+    'path': STRING_MAPPING,
 }
 
 def parse_url(url):
