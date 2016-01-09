@@ -46,6 +46,7 @@ DOCUMENT_MAPPING = {
 
     # Not analyzed
     '_id' : STORED_STRING_MAPPING,
+    'contentId': STORED_STRING_MAPPING,
     'url': STORED_STRING_MAPPING,
     'metaType': STORED_STRING_MAPPING,
 
@@ -62,6 +63,19 @@ DOCUMENT_MAPPING = {
     'layerfourIds': STRING_MAPPING,
     'layerfiveIds': STRING_MAPPING,
     'path': STRING_MAPPING,
+    'taglist': STRING_MAPPING,
+    'catId': STRING_MAPPING,
+    'catTitle': STRING_MAPPING,
+    'oneId': STRING_MAPPING,
+    'oneTitle': STRING_MAPPING,
+    'twoId': STRING_MAPPING,
+    'twoTitle': STRING_MAPPING,
+    'threeId': STRING_MAPPING,
+    'threeTitle': STRING_MAPPING,
+    'fourId': STRING_MAPPING,
+    'fourTitle': STRING_MAPPING,
+    'fiveId': STRING_MAPPING,
+    'fiveTitle': STRING_MAPPING,
 }
 
 def parse_url(url):

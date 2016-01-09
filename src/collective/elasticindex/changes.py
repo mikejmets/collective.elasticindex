@@ -6,12 +6,13 @@ import urlparse
 
 from AccessControl.PermissionRole import rolesForPermissionOn
 from Acquisition import aq_base
+from plone import api
+from plone.i18n.normalizer.base import mapUnicode
 from Products.CMFCore.CatalogTool import _mergedLocalRoles
 from Products.CMFCore.interfaces import IFolderish, IContentish
 from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone.interfaces.siteroot import IPloneSiteRoot
 from Products.CMFPlone.utils import safe_unicode
-from plone.i18n.normalizer.base import mapUnicode
 from transaction.interfaces import ISavepointDataManager, IDataManagerSavepoint
 from zope.component import queryUtility
 from zope.interface import implements
@@ -80,6 +81,7 @@ def get_data(content, security=False, domain=None):
         url = urlparse.urlunparse((parts[0], domain) + parts[2:])
 
     data = {'title': title,
+            'contentId': content.id,
             'metaType': content.portal_type,
             'sortableTitle': sortable_string(title),
             'description': content.Description(),
@@ -105,31 +107,63 @@ def get_data(content, security=False, domain=None):
         data['layerfourTitles']= []
         data['layerfiveIds']= []
         data['layerfiveTitles']= []
-        for rel in content.taglist:
-            if not rel.to_object:
-                continue
-            titleList = rel.to_object.title.split('_')
-            idList = rel.to_object.id.split('_')
-            for i in range(len(titleList)):
-                tags.append(titleList[i])
-                if i == 0:
-                    data['categoryIds'].append(idList[i])
-                    data['categoryTitles'].append(titleList[i])
-                elif i == 1:
-                    data['layeroneIds'].append(idList[i])
-                    data['layeroneTitles'].append(titleList[i])
-                elif i == 2:
-                    data['layertwoIds'].append(idList[i])
-                    data['layertwoTitles'].append(titleList[i])
-                elif i == 3:
-                    data['layerthreeIds'].append(idList[i])
-                    data['layerthreeTitles'].append(titleList[i])
-                elif i == 4:
-                    data['layerfourIds'].append(idList[i])
-                    data['layerfourTitles'].append(titleList[i])
-                elif i == 5:
-                    data['layerfiveIds'].append(idList[i])
-                    data['layerfiveTitles'].append(titleList[i])
+        for tag in content.taglist:
+            obj = api.content.get(UID=tag)
+            titleList = obj.title.split('_')
+            idList = obj.id.split('_')
+            data['categoryIds'].append(idList[0])
+            data['categoryTitles'].append(titleList[0])
+            if len(titleList) > 1:
+                data['layeroneIds'].append(idList[1])
+                data['layeroneTitles'].append(titleList[1])
+            else:
+                data['layeroneIds'].append('')
+                data['layeroneTitles'].append('')
+            if len(titleList) > 2:
+                data['layertwoIds'].append(idList[2])
+                data['layertwoTitles'].append(titleList[2])
+            else:
+                data['layertwoIds'].append('')
+                data['layertwoTitles'].append('')
+            if len(titleList) > 3:
+                data['layerthreeIds'].append(idList[3])
+                data['layerthreeTitles'].append(titleList[3])
+            else:
+                data['layerthreeIds'].append('')
+                data['layerthreeTitles'].append('')
+            if len(titleList) > 4:
+                data['layerfourIds'].append(idList[4])
+                data['layerfourTitles'].append(titleList[4])
+            else:
+                data['layerfourIds'].append('')
+                data['layerfourTitles'].append('')
+            if len(titleList) > 5:
+                data['layerfiveIds'].append(idList[5])
+                data['layerfiveTitles'].append(titleList[5])
+            else:
+                data['layerfiveIds'].append('')
+                data['layerfiveTitles'].append('')
+
+            #for i in range(len(titleList)):
+            #    tags.append(titleList[i])
+            #    if i == 0:
+            #        data['categoryIds'].append(idList[i])
+            #        data['categoryTitles'].append(titleList[i])
+            #    elif i == 1:
+            #        data['layeroneIds'].append(idList[i])
+            #        data['layeroneTitles'].append(titleList[i])
+            #    elif i == 2:
+            #        data['layertwoIds'].append(idList[i])
+            #        data['layertwoTitles'].append(titleList[i])
+            #    elif i == 3:
+            #        data['layerthreeIds'].append(idList[i])
+            #        data['layerthreeTitles'].append(titleList[i])
+            #    elif i == 4:
+            #        data['layerfourIds'].append(idList[i])
+            #        data['layerfourTitles'].append(titleList[i])
+            #    elif i == 5:
+            #        data['layerfiveIds'].append(idList[i])
+            #        data['layerfiveTitles'].append(titleList[i])
         data['tags'] = tags
         data['superclass'] = 'artefact'
         kws = []
@@ -140,6 +174,26 @@ def get_data(content, security=False, domain=None):
             kws = [kw for kw in kws if len(kw) > 0]
         data['keywords'] = kws
         data['format'] = content.getFTFormat()
+        data['taglist'] = content.taglist
+
+    elif content.portal_type == 'bb.toaster.ftlayeredtag':
+        data['catId'] = content.category.to_object.id
+        data['catTitle'] = content.category.to_object.title
+        if content.one:
+            data['oneId'] = content.one.to_object.id
+            data['oneTitle'] = content.one.to_object.title
+        if content.two:
+            data['twoId'] = content.two.to_object.id
+            data['twoTitle'] = content.two.to_object.title
+        if content.three:
+            data['threeId'] = content.three.to_object.id
+            data['threeTitle'] = content.three.to_object.title
+        if content.four:
+            data['fourId'] = content.four.to_object.id
+            data['fourTitle'] = content.four.to_object.title
+        if content.five:
+            data['fiveId'] = content.five.to_object.id
+            data['fiveTitle'] = content.five.to_object.title
 
     if security:
         data['authorizedUsers'] = get_security(content)
