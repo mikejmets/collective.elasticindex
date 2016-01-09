@@ -19,6 +19,7 @@ from zope.interface import implements
 import transaction
 
 from collective.elasticindex.interfaces import IElasticSettings
+from collective.elasticindex.toaster import getLayeredTagFromES
 from collective.elasticindex.utils import connect
 
 logger = logging.getLogger('collective.elasticindex')
@@ -108,9 +109,9 @@ def get_data(content, security=False, domain=None):
         data['layerfiveIds']= []
         data['layerfiveTitles']= []
         for tag in content.taglist:
-            obj = api.content.get(UID=tag)
-            titleList = obj.title.split('_')
-            idList = obj.id.split('_')
+            record = getLayeredTagFromES(tag)
+            titleList = record['title'].split('_')
+            idList = record['contentId'].split('_')
             data['categoryIds'].append(idList[0])
             data['categoryTitles'].append(titleList[0])
             if len(titleList) > 1:
