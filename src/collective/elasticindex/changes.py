@@ -82,6 +82,7 @@ def get_data(content, security=False, domain=None):
         url = urlparse.urlunparse((parts[0], domain) + parts[2:])
 
     data = {'title': title,
+            'uid': uid,
             'contentId': content.id,
             'metaType': content.portal_type,
             'sortableTitle': sortable_string(title),
@@ -325,7 +326,12 @@ class ElasticChanges(threading.local):
             if data:
                 if uid in self._unindex:
                     self._unindex.remove(uid)
-                self._index[uid] = data
+                try:
+                    self._index[uid] = data
+                except Exception, e:
+                    errormsg = 'Error {0} in Elasticsearch import site content'.format(data)
+                    logger.exception(errormsg)
+                    raise e
 
     def index_content(self, content):
         if not self._is_activated():
