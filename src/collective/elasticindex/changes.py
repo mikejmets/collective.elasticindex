@@ -109,6 +109,7 @@ def get_data(content, security=False, domain=None):
         data['layerfourTitles']= []
         data['layerfiveIds']= []
         data['layerfiveTitles']= []
+        searchable = []
         for tag in content.taglist:
             record = getLayeredTagFromES(tag)
             titleList = record['title'].split('_')
@@ -145,6 +146,10 @@ def get_data(content, security=False, domain=None):
             else:
                 data['layerfiveIds'].append('')
                 data['layerfiveTitles'].append('')
+            searchable = list(titleList)
+            if content.ftkeywords:
+                searchable.extend(content.ftkeywords.split(' '))
+            data['content'] = ' '.join(searchable)
 
             #for i in range(len(titleList)):
             #    tags.append(titleList[i])
