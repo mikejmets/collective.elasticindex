@@ -96,6 +96,7 @@ def get_data(content, security=False, domain=None):
             'bb.toaster.audioartefact', 'bb.toaster.documentartefact', 
             'bb.toaster.otherartefact', 'bb.toaster.videoartefact'):
         tags = []
+        data['tagTitles'] = []
         data['categoryIds'] = []
         data['categoryTitles']= []
         data['layeroneIds']= []
@@ -110,6 +111,7 @@ def get_data(content, security=False, domain=None):
         data['layerfiveTitles']= []
         for tag in content.taglist:
             record = getLayeredTagFromES(tag)
+            data['tagTitles'].append(record['title'])
             titleList = record['title'].split('_')
             idList = record['contentId'].split('_')
             data['categoryIds'].append(idList[0])
@@ -145,26 +147,6 @@ def get_data(content, security=False, domain=None):
                 data['layerfiveIds'].append('')
                 data['layerfiveTitles'].append('')
 
-            #for i in range(len(titleList)):
-            #    tags.append(titleList[i])
-            #    if i == 0:
-            #        data['categoryIds'].append(idList[i])
-            #        data['categoryTitles'].append(titleList[i])
-            #    elif i == 1:
-            #        data['layeroneIds'].append(idList[i])
-            #        data['layeroneTitles'].append(titleList[i])
-            #    elif i == 2:
-            #        data['layertwoIds'].append(idList[i])
-            #        data['layertwoTitles'].append(titleList[i])
-            #    elif i == 3:
-            #        data['layerthreeIds'].append(idList[i])
-            #        data['layerthreeTitles'].append(titleList[i])
-            #    elif i == 4:
-            #        data['layerfourIds'].append(idList[i])
-            #        data['layerfourTitles'].append(titleList[i])
-            #    elif i == 5:
-            #        data['layerfiveIds'].append(idList[i])
-            #        data['layerfiveTitles'].append(titleList[i])
         data['tags'] = tags
         data['superclass'] = 'artefact'
         kws = []
@@ -177,7 +159,7 @@ def get_data(content, security=False, domain=None):
         data['format'] = content.getFTFormat()
         data['taglist'] = content.taglist
 
-    elif content.portal_type == 'bb.toaster.ftlayeredtag':
+    if content.portal_type == 'bb.toaster.ftlayeredtag':
         data['catId'] = content.category.to_object.id
         data['catTitle'] = content.category.to_object.title
         if content.one:
@@ -195,6 +177,10 @@ def get_data(content, security=False, domain=None):
         if content.five:
             data['fiveId'] = content.five.to_object.id
             data['fiveTitle'] = content.five.to_object.title
+
+    #if content.portal_type == 'bb.toaster.audioartefact':
+    #    data['view_url'] = content
+    #if content.portal_type == 'bb.toaster.videoartefact':
 
     if security:
         data['authorizedUsers'] = get_security(content)
