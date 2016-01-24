@@ -41,13 +41,44 @@ def exactQueryES(terms):
         return []
     return hits['hits']
 
+def getESRecordByID(uid):
+    if uid is None or len(uid) == 0:
+        raise RuntimeError('getESRecordByID: no UID provided')
+
+    settings = IElasticSettings(getUtility(IPloneSiteRoot))
+    query = {
+        "query": {
+            "ids": {
+                "type": 'document',
+                "values": [uid]
+                }
+            }
+    }
+    try:
+        headers = {'Content-type': 'application/json', 
+                   'Accept': 'text/plain'}
+        url = random.choice(settings.get_search_urls())
+        response = urllib2.urlopen(url, json.dumps(query))
+
+        if response.msg != 'OK':
+            logging.error('getESRecordByID: error')
+            raise RuntimeError(
+                    'getESRecordByID no OK: return %s' % response.msg)
+    except Exception, e:
+        logging.error('getESRecordByID: exception = %s' % (
+                str(e)))
+        raise e
+    result = json.loads(response.read())
+    hits = result['hits']
+    total = hits['total']
+    if total != 1:
+        raise RuntimeError('getESRecordByID: found %s record for %s' % 
+                (total, uid))
+    return hits['hits'][0]['_source']
+
 def getLayeredTagFromES(uid):
-    records = exactQueryES([
-                {"term": { "metaType": "bb.toaster.ftlayeredtag" }},
-                {"term": { "_id": uid }}
-                ])
-    if len(records) == 0:
-        print result
+    record = getESRecordByID(uid)
+    if not record:
         raise RuntimeError('_getLayeredTagFromES: UID %s not found' % uid)
-    return records[0]['_source']
+    return record
 
