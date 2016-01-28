@@ -196,6 +196,9 @@ def get_data(content, security=False, domain=None):
             data['fiveId'] = content.five.to_object.id
             data['fiveTitle'] = content.five.to_object.title
 
+    elif content.portal_type == 'bb.toaster.ftlayer':
+        data['level'] = content.level
+
     if security:
         data['authorizedUsers'] = get_security(content)
 

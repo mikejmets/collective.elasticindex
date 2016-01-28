@@ -76,6 +76,7 @@ DOCUMENT_MAPPING = {
     'fourTitle': STRING_MAPPING,
     'fiveId': STRING_MAPPING,
     'fiveTitle': STRING_MAPPING,
+    'level': STRING_MAPPING,
 }
 
 def parse_url(url):
