@@ -82,6 +82,7 @@ def get_data(content, security=False, domain=None):
         url = urlparse.urlunparse((parts[0], domain) + parts[2:])
 
     data = {'title': title,
+            'uid': uid,
             'contentId': content.id,
             'metaType': content.portal_type,
             'sortableTitle': sortable_string(title),
@@ -96,6 +97,7 @@ def get_data(content, security=False, domain=None):
             'bb.toaster.audioartefact', 'bb.toaster.documentartefact', 
             'bb.toaster.otherartefact', 'bb.toaster.videoartefact'):
         tags = []
+        data['tagTitles'] = []
         data['categoryIds'] = []
         data['categoryTitles']= []
         data['layeroneIds']= []
@@ -108,8 +110,10 @@ def get_data(content, security=False, domain=None):
         data['layerfourTitles']= []
         data['layerfiveIds']= []
         data['layerfiveTitles']= []
+        searchable = []
         for tag in content.taglist:
             record = getLayeredTagFromES(tag)
+            data['tagTitles'].append(record['title'])
             titleList = record['title'].split('_')
             idList = record['contentId'].split('_')
             data['categoryIds'].append(idList[0])
@@ -144,27 +148,11 @@ def get_data(content, security=False, domain=None):
             else:
                 data['layerfiveIds'].append('')
                 data['layerfiveTitles'].append('')
+            searchable = list(titleList)
+            if content.ftkeywords:
+                searchable.extend(content.ftkeywords.split(' '))
+            data['content'] = ' '.join(searchable)
 
-            #for i in range(len(titleList)):
-            #    tags.append(titleList[i])
-            #    if i == 0:
-            #        data['categoryIds'].append(idList[i])
-            #        data['categoryTitles'].append(titleList[i])
-            #    elif i == 1:
-            #        data['layeroneIds'].append(idList[i])
-            #        data['layeroneTitles'].append(titleList[i])
-            #    elif i == 2:
-            #        data['layertwoIds'].append(idList[i])
-            #        data['layertwoTitles'].append(titleList[i])
-            #    elif i == 3:
-            #        data['layerthreeIds'].append(idList[i])
-            #        data['layerthreeTitles'].append(titleList[i])
-            #    elif i == 4:
-            #        data['layerfourIds'].append(idList[i])
-            #        data['layerfourTitles'].append(titleList[i])
-            #    elif i == 5:
-            #        data['layerfiveIds'].append(idList[i])
-            #        data['layerfiveTitles'].append(titleList[i])
         data['tags'] = tags
         data['superclass'] = 'artefact'
         kws = []
@@ -177,7 +165,7 @@ def get_data(content, security=False, domain=None):
         data['format'] = content.getFTFormat()
         data['taglist'] = content.taglist
 
-    elif content.portal_type == 'bb.toaster.ftlayeredtag':
+    if content.portal_type == 'bb.toaster.ftlayeredtag':
         data['catId'] = content.category.to_object.id
         data['catTitle'] = content.category.to_object.title
         if content.one:
@@ -196,8 +184,11 @@ def get_data(content, security=False, domain=None):
             data['fiveId'] = content.five.to_object.id
             data['fiveTitle'] = content.five.to_object.title
 
-    elif content.portal_type == 'bb.toaster.ftlayer':
+    if content.portal_type == 'bb.toaster.ftlayer':
         data['level'] = content.level
+    #if content.portal_type == 'bb.toaster.audioartefact':
+    #    data['view_url'] = content
+    #if content.portal_type == 'bb.toaster.videoartefact':
 
     if security:
         data['authorizedUsers'] = get_security(content)
@@ -328,7 +319,12 @@ class ElasticChanges(threading.local):
             if data:
                 if uid in self._unindex:
                     self._unindex.remove(uid)
-                self._index[uid] = data
+                try:
+                    self._index[uid] = data
+                except Exception, e:
+                    errormsg = 'Error {0} in Elasticsearch import site content'.format(data)
+                    logger.exception(errormsg)
+                    raise e
 
     def index_content(self, content):
         if not self._is_activated():
