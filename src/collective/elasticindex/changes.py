@@ -1,4 +1,5 @@
 
+import base64
 import logging
 import re
 import threading
@@ -188,12 +189,9 @@ def get_data(content, security=False, domain=None):
         data['level'] = content.level
 
     if content.portal_type == 'bb.toaster.fttile':
-        data['title'] = content.title
-        data['categoryId'] = content.category.to_object.id
+        data['icon'] = base64.b64encode(content.icon.data)
+        data['categoryId'] = content.category
         data['layeroneIds'] = content.layerone_list
-    #if content.portal_type == 'bb.toaster.audioartefact':
-    #    data['view_url'] = content
-    #if content.portal_type == 'bb.toaster.videoartefact':
 
     if security:
         data['authorizedUsers'] = get_security(content)

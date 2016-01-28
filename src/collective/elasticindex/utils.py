@@ -32,6 +32,10 @@ INT_MAPPING = {
     'store': 'no'
 }
 
+BLOB_MAPPING = {
+    'type': 'binary'
+}
+
 DOCUMENT_MAPPING = {
     '_index': {
         'enabled': True
@@ -77,6 +81,9 @@ DOCUMENT_MAPPING = {
     'fiveId': STRING_MAPPING,
     'fiveTitle': STRING_MAPPING,
     'level': STRING_MAPPING,
+
+    # Blobs
+    'icon': BLOB_MAPPING,
 }
 
 def parse_url(url):
