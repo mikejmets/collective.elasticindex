@@ -186,6 +186,11 @@ def get_data(content, security=False, domain=None):
 
     if content.portal_type == 'bb.toaster.ftlayer':
         data['level'] = content.level
+
+    if content.portal_type == 'bb.toaster.fttile':
+        data['title'] = content.title
+        data['categoryId'] = content.category.to_object.id
+        data['layeroneIds'] = content.layerone_list
     #if content.portal_type == 'bb.toaster.audioartefact':
     #    data['view_url'] = content
     #if content.portal_type == 'bb.toaster.videoartefact':
