@@ -187,6 +187,7 @@ def get_data(content, security=False, domain=None):
 
     if content.portal_type == 'bb.toaster.ftlayer':
         data['level'] = content.level
+        data['ftlayerId'] = content.id
 
     if content.portal_type == 'bb.toaster.fttile':
         data['icon'] = base64.b64encode(content.icon.data)

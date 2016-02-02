@@ -81,6 +81,7 @@ DOCUMENT_MAPPING = {
     'fiveId': STRING_MAPPING,
     'fiveTitle': STRING_MAPPING,
     'level': STRING_MAPPING,
+    'ftlayerId': STRING_MAPPING,
     'categoryId': STRING_MAPPING,
 
     # Blobs
