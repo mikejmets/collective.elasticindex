@@ -344,7 +344,7 @@ class ElasticChanges(threading.local):
         if not self._is_activated():
             return
         data = data
-        uid = data{'uid'}
+        uid = data['uid']
         #uid, data = get_data(content, security=self._settings.index_security,
         #                     domain=self._settings.normalize_domain_name)
         if data:
