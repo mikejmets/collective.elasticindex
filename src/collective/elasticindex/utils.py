@@ -83,6 +83,7 @@ DOCUMENT_MAPPING = {
     'level': STRING_MAPPING,
     'ftlayerId': STRING_MAPPING,
     'categoryId': STRING_MAPPING,
+    'review_status': STRING_MAPPING,
 
     # Blobs
     'icon': BLOB_MAPPING,

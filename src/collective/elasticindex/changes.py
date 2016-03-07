@@ -156,6 +156,7 @@ def get_data(content, security=False, domain=None):
 
         data['tags'] = tags
         data['superclass'] = 'artefact'
+        data['review_status'] = api.content.get_state(content)
         kws = []
         ftkeywords = content.ftkeywords
         if ftkeywords is not None and len(ftkeywords) > 0:
