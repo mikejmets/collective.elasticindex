@@ -31,6 +31,12 @@
      for="Products.CMFCore.interfaces.IFolderish
           Products.DCWorkflow.interfaces.IAfterTransitionEvent"
      />
+  <!-- Content status changes -->
+  <subscriber
+     handler=".subscribers.content_modified_status"
+     for="Products.CMFCore.interfaces.IContentish
+          Products.DCWorkflow.interfaces.IAfterTransitionEvent"
+     />
 
   <!-- Content modified -->
   <subscriber
