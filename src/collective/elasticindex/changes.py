@@ -200,6 +200,7 @@ def get_data(content, security=False, domain=None):
         data['icon'] = base64.b64encode(content.icon.data)
         data['categoryId'] = content.category
         data['layeroneIds'] = content.layerone_list
+        data['order'] = content.order
 
     if security:
         data['authorizedUsers'] = get_security(content)
