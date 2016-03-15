@@ -111,7 +111,13 @@ def get_data(content, security=False, domain=None):
         data['layerfourTitles']= []
         data['layerfiveIds']= []
         data['layerfiveTitles']= []
-        searchable = []
+        searchable = [title]
+        if content.portal_type == 'bb.toaster.audioartefact':
+            searchable.append('Audio')
+        elif content.portal_type == 'bb.toaster.documentartefact':
+            searchable.append('Document')
+        elif content.portal_type == 'bb.toaster.videoartefact':
+            searchable.append('Video')
         for tag in content.taglist:
             record = getLayeredTagFromES(tag)
             data['tagTitles'].append(record['title'])
@@ -149,7 +155,7 @@ def get_data(content, security=False, domain=None):
             else:
                 data['layerfiveIds'].append('')
                 data['layerfiveTitles'].append('')
-            searchable = list(titleList)
+            searchable.extend(list(titleList))
             if content.ftkeywords:
                 searchable.extend(content.ftkeywords.split(' '))
             data['content'] = ' '.join(searchable)
