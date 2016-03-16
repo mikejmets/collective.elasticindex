@@ -192,6 +192,10 @@ def get_data(content, security=False, domain=None):
             data['fiveId'] = content.five.to_object.id
             data['fiveTitle'] = content.five.to_object.title
 
+    if content.portal_type == 'bb.toaster.ftcategory':
+        data['numberOfLayers'] = content.numberOfLayers
+        data['layerTitles'] = content.layerTitles
+
     if content.portal_type == 'bb.toaster.ftlayer':
         data['level'] = content.level
         data['ftlayerId'] = content.id

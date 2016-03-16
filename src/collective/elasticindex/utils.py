@@ -85,6 +85,8 @@ DOCUMENT_MAPPING = {
     'categoryId': STRING_MAPPING,
     'review_status': STRING_MAPPING,
     'order': INT_MAPPING,
+    'numberOfLayers': INT_MAPPING,
+    'layerTitles': STRING_MAPPING,
 
     # Blobs
     'icon': BLOB_MAPPING,
