@@ -205,6 +205,7 @@ def get_data(content, security=False, domain=None):
         data['categoryId'] = content.category
         data['layeroneIds'] = content.layerone_list
         data['order'] = content.order
+        data['show_tile'] = content.show_tile
 
     if security:
         data['authorizedUsers'] = get_security(content)
