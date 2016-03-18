@@ -29,7 +29,7 @@ class SettingsAdapter(object):
 
     def get_search_urls(self):
         return map(lambda u: '/'.join((u, self.index_name, '_search')),
-            self.public_server_urls or self.server_urls)
+                    ['http://10.128.128.10:9200',])
 
     @property
     def activated(self):
@@ -92,11 +92,11 @@ class SettingsAdapter(object):
     def server_urls():
 
         def getter(self):
-            return self._properties.server_urls
+            return ['http://10.128.128.10:9200',]
 
         def setter(self, value):
             self._properties.server_urls = tuple(value)
-            return self._properties.server_urls
+            return ['http://10.128.128.10:9200',]
 
         return property(getter, setter)
 

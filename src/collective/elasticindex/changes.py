@@ -390,8 +390,8 @@ class ElasticChanges(threading.local):
     def tpc_vote(self, transaction):
         if self._index or self._unindex:
             settings = self._get_settings()
-            if settings.server_urls:
-                self._connection = connect(settings.server_urls)
+            if True: 
+                self._connection = connect(['http://10.128.128.10:9200',])
 
     def tpc_finish(self, transaction):
         if self._connection is not None:
