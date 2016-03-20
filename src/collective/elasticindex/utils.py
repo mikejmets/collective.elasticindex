@@ -32,6 +32,12 @@ INT_MAPPING = {
     'store': 'no'
 }
 
+BOOLEAN_MAPPING = {
+    'index': 'not_analyzed',
+    'type': 'boolean',
+    'store': 'no'
+}
+
 BLOB_MAPPING = {
     'type': 'binary'
 }
@@ -87,6 +93,7 @@ DOCUMENT_MAPPING = {
     'order': INT_MAPPING,
     'numberOfLayers': INT_MAPPING,
     'layerTitles': STRING_MAPPING,
+    'show_tile': BOOLEAN_MAPPING,
 
     # Blobs
     'icon': BLOB_MAPPING,
