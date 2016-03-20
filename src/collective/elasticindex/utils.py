@@ -39,12 +39,6 @@ BOOLEAN_MAPPING = {
     'store': 'no'
 }
 
-BOOLEAN_MAPPING = {
-    'index': 'not_analyzed',
-    'type': 'boolean',
-    'store': 'no'
-}
-
 BLOB_MAPPING = {
     'type': 'binary'
 }
@@ -98,7 +92,6 @@ DOCUMENT_MAPPING = {
     'categoryId': STRING_MAPPING,
     'review_status': STRING_MAPPING,
     'order': INT_MAPPING,
-    'show_tile': BOOLEAN_MAPPING,
     'numberOfLayers': INT_MAPPING,
     'layerTitles': STRING_MAPPING,
     'show_tile': BOOLEAN_MAPPING,
