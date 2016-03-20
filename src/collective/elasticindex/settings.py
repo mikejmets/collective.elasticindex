@@ -1,5 +1,6 @@
 
 from Acquisition import aq_base
+from collective.elasticindex import SERVER_URLS
 from Products.CMFCore.interfaces import IPropertiesTool
 from zope.component import getUtility
 
@@ -29,7 +30,7 @@ class SettingsAdapter(object):
 
     def get_search_urls(self):
         return map(lambda u: '/'.join((u, self.index_name, '_search')),
-                    ['http://10.128.128.10:9200',])
+                    SERVER_URLS)
 
     @property
     def activated(self):
@@ -92,11 +93,11 @@ class SettingsAdapter(object):
     def server_urls():
 
         def getter(self):
-            return ['http://10.128.128.10:9200',]
+            return SERVER_URLS
 
         def setter(self, value):
             self._properties.server_urls = tuple(value)
-            return ['http://10.128.128.10:9200',]
+            return SERVER_URLS
 
         return property(getter, setter)
 

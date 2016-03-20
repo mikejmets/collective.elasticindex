@@ -19,6 +19,7 @@ from zope.component import queryUtility
 from zope.interface import implements
 import transaction
 
+from collective.elasticindex import SERVER_URLS
 from collective.elasticindex.interfaces import IElasticSettings
 from collective.elasticindex.toaster import getLayeredTagFromES
 from collective.elasticindex.utils import connect
@@ -392,7 +393,7 @@ class ElasticChanges(threading.local):
         if self._index or self._unindex:
             settings = self._get_settings()
             if True: 
-                self._connection = connect(['http://10.128.128.10:9200',])
+                self._connection = connect(SERVER_URLS)
 
     def tpc_finish(self, transaction):
         if self._connection is not None:

@@ -2,6 +2,8 @@
 import pyes
 import urlparse
 
+from collective.elasticindex import SERVER_URLS
+
 ANALYZED_STRING_MAPPING = {
     'index': 'analyzed',
     'type': 'string',
@@ -118,12 +120,12 @@ def connect(urls):
 
 
 def create_index(settings):
-    connection = connect(['http://10.128.128.10:9200',])
+    connection = connect(SERVER_URLS)
     connection.indices.create_index_if_missing(settings.index_name)
     connection.indices.put_mapping(
         'document', {'properties' : DOCUMENT_MAPPING}, [settings.index_name])
 
 
 def delete_index(settings):
-    connection = connect(['http://10.128.128.10:9200',])
+    connection = connect(SERVER_URLS)
     connection.indices.delete_index_if_exists(settings.index_name)
