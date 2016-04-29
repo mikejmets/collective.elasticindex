@@ -2,6 +2,8 @@
 import pyes
 import urlparse
 
+from collective.elasticindex import SERVER_URLS
+
 ANALYZED_STRING_MAPPING = {
     'index': 'analyzed',
     'type': 'string',
@@ -90,9 +92,9 @@ DOCUMENT_MAPPING = {
     'categoryId': STRING_MAPPING,
     'review_status': STRING_MAPPING,
     'order': INT_MAPPING,
-    'show_tile': BOOLEAN_MAPPING,
     'numberOfLayers': INT_MAPPING,
     'layerTitles': STRING_MAPPING,
+    'show_tile': BOOLEAN_MAPPING,
 
     # Blobs
     'icon': BLOB_MAPPING,
@@ -118,12 +120,12 @@ def connect(urls):
 
 
 def create_index(settings):
-    connection = connect(settings.server_urls)
+    connection = connect(SERVER_URLS)
     connection.indices.create_index_if_missing(settings.index_name)
     connection.indices.put_mapping(
         'document', {'properties' : DOCUMENT_MAPPING}, [settings.index_name])
 
 
 def delete_index(settings):
-    connection = connect(settings.server_urls)
+    connection = connect(SERVER_URLS)
     connection.indices.delete_index_if_exists(settings.index_name)
